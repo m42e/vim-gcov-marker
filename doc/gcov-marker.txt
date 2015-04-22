@@ -1,0 +1,53 @@
+*gcov-marker* gcov-marker: a simple gcov display for Vim
+
+==============================================================================
+Contents
+
+ 1. Introduction                                |gcov-marker-introduction|
+ 2. Commands                                    |gcov-marker-commands|
+ 3. Information                                 |gcov-marker-info|
+ 4. License                                     |gcov-marker-license|
+==============================================================================
+
+                                                *gcov-marker-introduction*
+Introduction ~
+
+This plugin provides a simple way to load and reload gcov files for an open
+source file. It will highlight the covered and uncovered lines and publish
+the uncovered lines to the location list.
+
+It does not show you detailed information about the coverage at the moment so
+you do not get detailed information like the number of hits or branches.
+
+------------------------------------------------------------------------------
+                                                *gcov-marker-commands*
+Commands ~
+
+The *GcovLoad* command
+
+This command can be used for all actions needed. If a parameter is given
+it will be used as path to the ".gcov" file for the current buffer. 
+
+If no argument is given, the last file used for the buffer is used.
+
+If it is called with a bang the markers will be deleted.
+------------------------------------------------------------------------------
+                                                *gcov-marker-information*
+Information ~
+
+The source is located on github: https://github.com/m42e/vim-gcov-marker
+
+Please create tickets there if there were issues, and create pull requests
+with features or bugfixes.
+
+Thanks a lot
+
+
+------------------------------------------------------------------------------
+                                                *gcov-marker-license*
+License ~
+
+The software is licensed under the MIT. See LICENSE file for details.
+
+
+vim: ft=help
