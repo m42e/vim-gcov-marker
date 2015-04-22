@@ -1,30 +1,45 @@
-
-function! Setcov(filename)
-    exe ":sign unplace *"
-    for line in readfile(a:filename)
-        let d = split(line, ':')
-        let c = substitute(d[0], " *", "", "")
-        let l = substitute(d[1], " *", "", "")
-        if '-' != c && c !~ '#'
-            exe ":sign define c" . c . " text=" . c . ""
-            exe ":sign place " . l . " line=" . l . " name=c" . c . " file=" . expand("%:p")
-        elseif c =~ '#'
-            exe ":sign define cd text=# linehl=Special"
-            exe ":sign place " . l . " line=" . l . " name=cd file=" . expand("%:p")
-        endif
-    endfor
-    let b:coveragefile = filename
+function! SetCov(...)
+   if(a:0 == 2)
+         let filename = a:2
+   elseif (a:0 == 1)
+      if(a:1 == '!')
+         exe ":sign unplace *"
+         return
+      endif
+      if(exists("b:coveragefile") && b:coveragefile != '')
+         let filename = b:coveragefile
+      else
+         echoerr "no file for buffer specified yet"
+         return
+      endif
+   else
+      return
+   endif
+   "Clear previous markers
+   exe ":sign unplace *"
+   call setloclist(0, [])
+   let currentfile = expand('%')
+   "Read coverage file (work only without branch coverage at the moment )
+   for line in readfile(filename)
+      if line =~ ':'
+         let d = split(line, ':')
+         let c = substitute(d[0], " *", "", "")
+         let l = substitute(d[1], " *", "", "")
+         if '-' != c && c !~ '#'
+            exe ":sign define gcov_c" . c . " linehl=GcovCovered text=" . c . ""
+            exe ":sign place " . l . " line=" . l . " name=gcov_c" . c . " file=" . expand("%:p")
+         elseif c =~ '#'
+            exe ":sign define gcov_uncovered text=# linehl=GcovUncovered"
+            exe ":sign place " . l . " line=" . l . " name=gcov_uncovered file=" . expand("%:p")
+            exe ":laddexpr '".currentfile.":".l.":uncovered'"
+         endif
+      endif
+   endfor
+   " Set the coverage file for the current buffer
+   let b:coveragefile = filename
+   exe ":lopen"
 endfunction
 
-function! ReloadCov()
-   Setcov(b:coveragefile)
-endfunction
 
-function! ClearCov()
-    exe ":sign unplace *"
-endfunction
-
-command -nargs 1 -complete=file GcovLoad call SetCov(<args>)
-command -nargs 0 -complete=file GcovLoad call ReloadCov()
-command -nargs 0 -complete=file GcovStop call ClearCov()
+command! -bang -nargs=* -complete=file GcovLoad call SetCov('<bang>',<f-args>)
 
