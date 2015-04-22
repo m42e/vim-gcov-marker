@@ -20,23 +20,23 @@ function! SetCov(...)
    call setloclist(0, [])
    let currentfile = expand('%')
    "Read coverage file (work only without branch coverage at the moment )
+   exe ":sign define gcov_covered linehl=GcovCovered text=✓"
+   exe ":sign define gcov_uncovered linehl=GcovUncovered text=✘"
    for line in readfile(filename)
       if line =~ ':'
          let d = split(line, ':')
          let c = substitute(d[0], " *", "", "")
          let l = substitute(d[1], " *", "", "")
          if '-' != c && c !~ '#'
-            exe ":sign define gcov_c" . c . " linehl=GcovCovered text=" . c . ""
-            exe ":sign place " . l . " line=" . l . " name=gcov_c" . c . " file=" . expand("%:p")
+            exe ":sign place " . l . " line=" . l . " name=gcov_covered file=" . expand("%:p")
          elseif c =~ '#'
-            exe ":sign define gcov_uncovered text=# linehl=GcovUncovered"
             exe ":sign place " . l . " line=" . l . " name=gcov_uncovered file=" . expand("%:p")
             exe ":laddexpr '".currentfile.":".l.":uncovered'"
          endif
       endif
    endfor
    " Set the coverage file for the current buffer
-   let b:coveragefile = filename
+   let b:coveragefile = fnamemodify(filename, ':p')
    exe ":lopen"
 endfunction
 
