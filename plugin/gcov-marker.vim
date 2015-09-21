@@ -27,9 +27,9 @@ function! SetCov(...)
          let d = split(line, ':')
          let c = substitute(d[0], " *", "", "")
          let l = substitute(d[1], " *", "", "")
-         if '-' != c && c !~ '#'
+         if '-' != c && c !~ '#' && c !~ '='
             exe ":sign place " . l . " line=" . l . " name=gcov_covered file=" . expand("%:p")
-         elseif c =~ '#'
+         elseif c =~ '#' || c =~ '='
             exe ":sign place " . l . " line=" . l . " name=gcov_uncovered file=" . expand("%:p")
             exe ":laddexpr '".currentfile.":".l.":uncovered'"
          endif
