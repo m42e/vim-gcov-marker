@@ -18,3 +18,19 @@ you do not get detailed information like the number of hits or branches.
 
 In the window of your source file, run command
 :GcovLoad source.gcov
+
+## Configuration
+
+Default markers can be customized using the variables below.
+```vimrc
+let g:gcov_marker_covered    = '✓'
+let g:gcov_marker_uncovered  = 'X'
+```
+
+By default, the plugin opens the location list once uncovered lines are
+published. This behavior can be changed by setting the global variable below.
+Note that the uncovered lines will always be published to the location list.
+```vimrc
+let g:gcov_marker_auto_lopen = 0
+```
+Command :lopen can be used to display the list of uncovered lines in the location list.
