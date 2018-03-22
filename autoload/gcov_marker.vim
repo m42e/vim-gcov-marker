@@ -34,8 +34,8 @@ function gcov_marker#SetCov(...)
     call setloclist(0, [])
     let currentfile = expand('%')
     "Read coverage file (work only without branch coverage at the moment )
-    exe ":sign define gcov_covered linehl=GcovCovered text=" . g:gcov_marker_covered
-    exe ":sign define gcov_uncovered linehl=GcovUncovered text=" . g:gcov_marker_uncovered
+    exe ":sign define gcov_covered linehl=GcovCoveredLine texthl=GcovCoveredText text=" . g:gcov_marker_covered
+    exe ":sign define gcov_uncovered linehl=GcovUncoveredLine texthl=GcovUncoveredText text=" . g:gcov_marker_uncovered
     for line in readfile(filename)
         if line =~ ':'
             let d = split(line, ':')
