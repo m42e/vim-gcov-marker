@@ -10,7 +10,23 @@ else
     if !exists("g:gcov_marker_auto_lopen")
         let g:gcov_marker_auto_lopen = 1
     endif
+    if !exists("g:gcov_marker_path")
+        let g:gcov_marker_path = '.'
+    endif
 endif
+
+function gcov_marker#FindCov(...)
+    if (a:0 == 1)
+        if(a:1 == '!')
+            exe ":sign unplace *"
+            return
+        endif
+    endif
+    let filename = expand('%:t')
+    let dirname = g:gcov_marker_path
+    echo "load file " . dirname . '/' . filename . ".gcov for coverage"
+    call gcov_marker#SetCov('<bang>', dirname . '/' . filename . ".gcov")
+  endfunction
 
 function gcov_marker#SetCov(...)
     if(a:0 == 2)

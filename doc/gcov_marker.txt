@@ -32,6 +32,12 @@ If no argument is given, the last file used for the buffer is used.
 
 If it is called with a bang the markers will be deleted.
 
+The *GcovFind* command
+
+This command uses the value of g:gcov_marker_path to find the ".gcov" file for the current buffer.
+
+If it is called with a bang the markers will be deleted.
+
 ------------------------------------------------------------------------------
                                                 *gcov-marker-configuration*
 Configuration ~
@@ -40,6 +46,11 @@ Default markers can be customized using the variables below.
 
 let g:gcov_marker_covered    = '✓'
 let g:gcov_marker_uncovered  = 'X'
+
+The *GcovFind* command needs to know where to look for the ".gcov" files.
+There is only one folder allowed, all the ".gcov" files has to be placed there.
+
+let g:gcov_marker_path  = 'path/to/gcov/files/'
 
 By default, the plugin opens the location list once uncovered lines are
 published. This behavior can be changed by setting the global variable below.
