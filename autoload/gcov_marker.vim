@@ -23,9 +23,13 @@ function gcov_marker#FindCov(...)
         endif
     endif
     let filename = expand('%:t')
-    let dirname = g:gcov_marker_path
-    echo "load file " . dirname . '/' . filename . ".gcov for coverage"
-    call gcov_marker#SetCov('<bang>', dirname . '/' . filename . ".gcov")
+    let files = split(globpath(g:gcov_marker_path, filename . ".gcov"), '\n')
+    if (len(files) == 0)
+      echoerr "could not find any file named " . filename . ".gcov"
+      return
+    endif
+    echo "load file " . files[0] . " for coverage"
+    call gcov_marker#SetCov('<bang>', files[0])
   endfunction
 
 function gcov_marker#SetCov(...)

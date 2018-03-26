@@ -32,7 +32,7 @@ let g:gcov_marker_uncovered  = 'X'
 
 
 The *GcovFind* command needs to know where to look for the .gcov files.
-There is only one folder allowed, all the .gcov files has to be placed there.
+The variable takes a comma seperated list of folders.
 ```vimrc
 let g:gcov_marker_path  = 'path/to/gcov/files/'
 ```
