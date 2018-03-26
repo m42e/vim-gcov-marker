@@ -25,11 +25,24 @@ function gcov_marker#FindCov(...)
     let filename = expand('%:t')
     let files = split(globpath(g:gcov_marker_path, filename . ".gcov"), '\n')
     if (len(files) == 0)
-      echoerr "could not find any file named " . filename . ".gcov"
-      return
+        echoerr "could not find any file named " . filename . ".gcov"
+        return
     endif
-    echo "load file " . files[0] . " for coverage"
-    call gcov_marker#SetCov('<bang>', files[0])
+    " check current file name matches Source
+    for file in files
+        for line in readfile(file)
+            if line =~ ':.*:.*:'
+                let d = split(line, ':')
+                let c = substitute(d[0], " *", "", "")
+                let l = substitute(d[1], " *", "", "")
+                if c == '-' && l == 0 && d[2] =~ "Source" && d[3] == expand('%:p')
+                    echo "load file " . file . " for coverage"
+                    call gcov_marker#SetCov('<bang>', file)
+                    return
+                endif
+            endif
+        endfor
+    endfor
   endfunction
 
 function gcov_marker#SetCov(...)
