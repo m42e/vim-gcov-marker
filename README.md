@@ -19,12 +19,22 @@ you do not get detailed information like the number of hits or branches.
 In the window of your source file, run command
 :GcovLoad source.gcov
 
+If *g:gcov_marker_path* contains a folder with all your .gcov files, run
+:GcovFind
+
 ## Configuration
 
 Default markers can be customized using the variables below.
 ```vimrc
 let g:gcov_marker_covered    = '✓'
 let g:gcov_marker_uncovered  = 'X'
+```
+
+
+The *GcovFind* command needs to know where to look for the .gcov files.
+The variable takes a comma seperated list of folders.
+```vimrc
+let g:gcov_marker_path  = 'path/to/gcov/files/'
 ```
 
 By default, the plugin opens the location list once uncovered lines are
